@@ -2,18 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AuthRoutes.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthRoutes.WebApi.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class ValuesController : Controller
     {
+        public readonly IIdentityServerHttpClient _identityServerHttpClient;
+
+        public ValuesController(IIdentityServerHttpClient identityServerHttpClient)
+        {
+            _identityServerHttpClient = identityServerHttpClient;
+        }
+
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var values = await _identityServerHttpClient.GetValues();
+            return values.Result;
+            //return new string[] { "value1", "value2" };
         }
 
         // GET api/values/5

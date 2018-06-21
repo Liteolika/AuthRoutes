@@ -21,10 +21,10 @@ namespace AuthRoutes.IdServer
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // Setup Identity Server
             services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("idserver"));
 
-            services
-                .AddIdentity<ApplicationUser, IdentityRole>(options =>
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
@@ -34,9 +34,6 @@ namespace AuthRoutes.IdServer
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
-            services.AddMvc().AddControllersAsServices();
-
 
             var identityServerBuilder = services.AddIdentityServer(options =>
             {
@@ -48,6 +45,23 @@ namespace AuthRoutes.IdServer
                 .AddAspNetIdentity<ApplicationUser>();
 
             identityServerBuilder.AddDeveloperSigningCredential();
+            // -----------------------------------------------------
+
+            services.AddMvc().AddControllersAsServices();
+
+            // Setup MVC Authentication
+
+            services.AddAuthorization();
+
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = SystemConfig.IdentityServerUrl;
+                    options.RequireHttpsMetadata = false;
+                    options.ApiName = IdentityConfig.Resources.IdentityServerApi;
+                });
+
+            
 
         }
 
@@ -60,8 +74,9 @@ namespace AuthRoutes.IdServer
             }
 
             app.UseIdentityServer();
-            app.UseStaticFiles();
 
+            app.UseAuthentication();
+            app.UseStaticFiles();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

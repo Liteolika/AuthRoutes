@@ -54,7 +54,7 @@ namespace AuthRoutes.IdServer.Data
                 };
 
                 var passwordHasher = provider.GetService<IPasswordHasher<ApplicationUser>>();
-                user.PasswordHash = passwordHasher.HashPassword(user, "Kakan123!");
+                user.PasswordHash = passwordHasher.HashPassword(user, "Test123!");
                 var userStore = new UserStore<ApplicationUser>(context);
                 await userStore.CreateAsync(user);
             }

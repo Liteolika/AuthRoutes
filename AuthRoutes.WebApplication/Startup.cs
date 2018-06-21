@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-
+using AuthRoutes.Core.Services;
 
 namespace AuthRoutes.WebApplication
 {
@@ -66,6 +66,10 @@ namespace AuthRoutes.WebApplication
                 //config.AddPolicy(ApplicationIdentityServerConstants.Policy.AccessAdmin,
                 //    policy => policy.RequireClaim(AccessClaims.AdminManagement.ClaimType));
             });
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IWebApiHttpClient, WebApiHttpClient>();
+
 
 
         }

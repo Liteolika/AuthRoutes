@@ -11,11 +11,13 @@ namespace AuthRoutes.Core
             public const string WebApplication = "webapplication";
             public const string WebApi = "webapi";
             public const string WebApiAdmin = "webapiAdmin";
+            public const string IdServer = "idserver";
         }
 
         public static class Resources
         {
             public const string WebApi = "webapi";
+            public const string IdentityServerApi = "idserverapi";
         }
 
         public static class Role
