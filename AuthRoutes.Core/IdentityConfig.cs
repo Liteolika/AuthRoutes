@@ -1,21 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AuthRoutes.Core
 {
     public class IdentityConfig
     {
-        public static string IdentityServerUrl => "http://localhost:54597";
+
+        public class Scopes
+        {
+            public const string WebApplication = "webapplication";
+            public const string WebApi = "webapi";
+            public const string WebApiAdmin = "webapiAdmin";
+        }
 
         public static class Resources
         {
-            public static string WebApi => "webapi";
+            public const string WebApi = "webapi";
         }
 
-        public static class Scopes
+        public static class Role
         {
-            public static string WebApiAdmin => "";
-            public static string WebApiApp => "";
-            public static string Backoffice => "";
+            public const string PublicUser = "PublicUser";
+            public const string AdminUser = "AdminUser";
         }
 
     }
